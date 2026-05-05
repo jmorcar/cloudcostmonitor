@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CloudCostMonitor</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #050816;
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(0,122,255,0.15), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(168,85,247,0.15), transparent 35%);
+      z-index: -1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -1px;
+    }
+
+    .logo span {
+      color: #4da3ff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 100px;
+    }
+
+    .hero h1 {
+      font-size: 72px;
+      line-height: 1;
+      margin-bottom: 25px;
+      letter-spacing: -3px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 16px 28px;
+      border-radius: 18px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #007aff, #6f5cff);
+      color: white;
+      box-shadow: 0 10px 40px rgba(0,122,255,0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 32px;
+      padding: 35px;
+      backdrop-filter: blur(30px);
+      box-shadow: 0 20px 80px rgba(0,0,0,0.45);
+    }
+
+    .price {
+      font-size: 82px;
+      font-weight: 700;
+      margin: 15px 0;
+    }
+
+    .green {
+      color: #38ff91;
+    }
+
+    .small {
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .stat-box {
+      background: rgba(255,255,255,0.04);
+      border-radius: 22px;
+      padding: 25px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stat-box h3 {
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    .features {
+      margin-top: 120px;
+    }
+
+    .section-title {
+      font-size: 48px;
+      margin-bottom: 20px;
+      letter-spacing: -2px;
+    }
+
+    .section-subtitle {
+      color: rgba(255,255,255,0.65);
+      max-width: 700px;
+      margin-bottom: 60px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+
+    .feature {
+      background: rgba(255,255,255,0.05);
+      border-radius: 28px;
+      padding: 35px;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-4px);
+      border-color: rgba(77,163,255,0.4);
+    }
+
+    .feature-icon {
+      font-size: 34px;
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+
+    .feature p {
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+    }
+
+    .footer {
+      margin-top: 120px;
+      padding: 50px 0;
+      text-align: center;
+      color: rgba(255,255,255,0.45);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    @media(max-width: 900px) {
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 52px;
+      }
+
+      .section-title {
+        font-size: 38px;
+      }
+
+      .price {
+        font-size: 62px;
+      }
+
+      nav {
+        flex-direction: column;
+        gap: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <nav>
+      <div class="logo">
+        Cloud<span>CostMonitor</span>
+      </div>
+
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#support">Support</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+
+      <div>
+        <h1>
+          Monitoriza tus costes Cloud en tiempo real
+        </h1>
+
+        <p>
+          CloudCostMonitor te ayuda a visualizar costes, inventario,
+          clusters AKS, tendencias y optimización de infraestructura
+          desde una interfaz moderna diseñada para equipos DevOps y FinOps.
+        </p>
+
+        <div class="cta-buttons">
+          <a class="btn btn-primary" href="#">
+            Descargar App
+          </a>
+
+          <a class="btn btn-secondary" href="#support">
+            Soporte
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+
+        <div class="small">THIS WEEK'S COST</div>
+
+        <div class="price">
+          €1.9<span class="green">K</span>
+        </div>
+
+        <div class="small green">
+          ↓ 81,5% vs last week
+        </div>
+
+        <div class="stats">
+
+          <div class="stat-box">
+            <div class="small">Resources</div>
+            <h3>461</h3>
+          </div>
+
+          <div class="stat-box">
+            <div class="small">AKS Clusters</div>
+            <h3>7</h3>
+          </div>
+
+          <div class="stat-box">
+            <div class="small">Savings</div>
+            <h3 class="green">3390€</h3>
+          </div>
+
+          <div class="stat-box">
+            <div class="small">Resource Types</div>
+            <h3>46</h3>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="features" id="features">
+
+      <h2 class="section-title">
+        Funciones principales
+      </h2>
+
+      <p class="section-subtitle">
+        Diseñado para Azure, Kubernetes y plataformas cloud modernas.
+        Obtén visibilidad completa del gasto y estado de tu infraestructura.
+      </p>
+
+      <div class="feature-grid">
+
+        <div class="feature">
+          <div class="feature-icon">📊</div>
+          <h3>Cost Analysis</h3>
+          <p>
+            Analiza costes diarios, mensuales y amortizados
+            por servicio, grupo o suscripción.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">☸️</div>
+          <h3>AKS Monitoring</h3>
+          <p>
+            Visualiza clusters Kubernetes, consumo,
+            alertas y tendencias de uso.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">💰</div>
+          <h3>FinOps Dashboard</h3>
+          <p>
+            Detecta desperdicio cloud y optimiza costes
+            con métricas en tiempo real.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🔔</div>
+          <h3>Alertas</h3>
+          <p>
+            Recibe alertas automáticas cuando los costes
+            superen umbrales definidos.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">📦</div>
+          <h3>Inventario Cloud</h3>
+          <p>
+            Explora recursos, máquinas virtuales,
+            bases de datos y networking.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">⚡</div>
+          <h3>Realtime Refresh</h3>
+          <p>
+            Datos actualizados automáticamente
+            con experiencia mobile-first.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section class="features" id="support">
+
+      <h2 class="section-title">
+        Soporte del producto
+      </h2>
+
+      <p class="section-subtitle">
+        Si necesitas soporte técnico, incidencias o consultas
+        sobre CloudCostMonitor puedes contactar directamente.
+      </p>
+
+      <div class="feature-grid">
+
+        <div class="feature">
+          <div class="feature-icon">📧</div>
+          <h3>Email</h3>
+          <p>
+            support@cloudcostmonitor.app
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🛠️</div>
+          <h3>Technical Support</h3>
+          <p>
+            Resolución de incidencias, bugs,
+            optimización y consultas cloud.
+          </p>
+        </div>
+
+        <div class="feature">
+          <div class="feature-icon">🚀</div>
+          <h3>Roadmap</h3>
+          <p>
+            Nuevas funciones para FinOps,
+            Azure Cost Management y AKS observability.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="footer" id="contact">
+      © 2026 CloudCostMonitor — All rights reserved
+    </div>
+
+  </div>
+
+</body>
+</html>
